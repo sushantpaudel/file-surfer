@@ -1,0 +1,48 @@
+doctype=html
+html
+	head
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
+		link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css", integrity="sha384-wESLQ85D6gbsF459vf1CiZ2+rr+CsxRY0RpiF1tLlQpDnAgg6rwdsUF1+Ics2bni", crossorigin="anonymous")
+		title Files Retrieval
+	body
+		.container
+			.row
+				.col-sm-6.col-md-4.col-lg-3.mt-4
+					.form-group
+						.label Search Filter 
+						input.form-control(name="search" id="search")
+					.form-group
+						button.btn.btn-sm.btn-success(onclick="search();") Submit
+				.col-sm-6.col-md-8.col-lg-9.mt-4
+				each file of files 
+					.col-sm-6.col-md-4.col-lg-3.mt-4
+						- let url = ''
+						- if (file.isDirectory) url = "/?path=" + file.filePath
+						- else if (file.isImage) url = "/preview?path=" + file.filePath
+						- else if (file.isVideo) url = "/video?path=" + file.filePath
+						- else url = "/download?path=" + file.filePath
+						a(href = url)
+							.card.shadow
+								- let imgSrc = ''
+								- if (file.isDirectory) imgSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Icons8_flat_folder.svg/1200px-Icons8_flat_folder.svg.png"
+								- else if (file.blob) imgSrc = blob
+								- else imgSrc = "https://www.clker.com/cliparts/y/M/K/q/q/O/folder-with-file-icon-hi.png"
+								img.card-img-top.p-3(style="height: 200px;object-fit: cover;" src = imgSrc)
+								.card-title.p-3 #{file.name}
+								.card-footer
+									if !file.isDirectory
+										a.float-right.mx-2.btn.btn-sm.btn-success(href = "/download?path=" + file.filePath data-tooltip="Download")
+											i.fa.fa-download
+									else 
+										a.float-right.mx-2.btn.btn-sm.btn-warning(href = "/")
+											i.fa.fa-fast-backward
+
+
+append scripts
+	script(src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous")
+	script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js", integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF", crossorigin="anonymous")
+	script.
+		const search = () => {
+			const searchTerm = $(`input[name=search]`).val();
+			//-  TODO: Implement searching
+		}
